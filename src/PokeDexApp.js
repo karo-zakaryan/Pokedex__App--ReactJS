@@ -2,6 +2,8 @@ import React, {Component} from 'react';
 import {bindActionCreators} from "redux";
 import {getPokemon} from "./redux/thunks/mainThunks";
 import {connect} from "react-redux";
+import Header from "./components/Header/Header";
+import PokeContainer from "./components/PokeContainer/PokeContainer";
 
 class PokeDexApp extends Component {
 
@@ -16,7 +18,8 @@ class PokeDexApp extends Component {
     render() {
         return (
             <div>
-
+                <Header/>
+                <PokeContainer/>
             </div>
         );
     }
