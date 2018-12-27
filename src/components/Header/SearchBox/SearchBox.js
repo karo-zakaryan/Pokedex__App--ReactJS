@@ -1,17 +1,17 @@
 import React, {Component} from 'react';
 import InputBase from '@material-ui/core/InputBase';
-import { fade } from '@material-ui/core/styles/colorManipulator';
-import { withStyles } from '@material-ui/core/styles';
+import {fade} from '@material-ui/core/styles/colorManipulator';
+import {withStyles} from '@material-ui/core/styles';
 import SearchIcon from '@material-ui/icons/Search';
 
 class SearchBox extends Component {
     render() {
-        const { classes } = this.props;
+        const {classes} = this.props;
 
         return (
             <div className={classes.search}>
                 <div className={classes.searchIcon}>
-                    <SearchIcon />
+                    <SearchIcon/>
                 </div>
                 <InputBase
                     placeholder="Search…"
@@ -34,6 +34,7 @@ const styles = theme => ({
             backgroundColor: fade(theme.palette.common.white, 0.25),
         },
         marginLeft: 0,
+        marginRight: "2%",
         width: '100%',
         [theme.breakpoints.up('sm')]: {
             marginLeft: theme.spacing.unit,

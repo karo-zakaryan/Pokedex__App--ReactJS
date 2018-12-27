@@ -1,16 +1,24 @@
 import React, {Component} from 'react';
 import PokeList from "./PokeList/PokeList";
-import PokeDetails from "./PokeDetails/PokeDetails";
+import {withStyles} from "@material-ui/styles";
 
 class PokeContainer extends Component {
     render() {
+        const {classes} = this.props;
         return (
-            <main>
+            <main className={classes.root}>
                 <PokeList/>
-                <PokeDetails/>
             </main>
         );
     }
 }
 
-export default PokeContainer;
+const styles = () => ({
+    root: {
+        display: "flex",
+        justifyContent: "center",
+        marginTop: "5%"
+    }
+});
+
+export default withStyles(styles)(PokeContainer);
