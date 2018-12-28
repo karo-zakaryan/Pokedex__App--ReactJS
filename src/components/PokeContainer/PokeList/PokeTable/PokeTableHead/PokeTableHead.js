@@ -23,13 +23,11 @@ class PokeTableHead extends Component {
                         return (
                             <TableCell
                                 key={row.id}
-                                sortDirection={orderBy === row.id ? order : false}
-                            >
+                                sortDirection={orderBy === row.id ? order : false}>
                                 <TableSortLabel
                                     active={orderBy === row.id}
                                     direction={order}
-                                    onClick={this.createSortHandler(row.id)}
-                                >
+                                    onClick={this.createSortHandler(row.id)}>
                                     {row.label}
                                 </TableSortLabel>
                             </TableCell>

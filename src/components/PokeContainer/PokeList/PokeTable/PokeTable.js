@@ -9,6 +9,7 @@ import {
 import PokeTableHead from "./PokeTableHead/PokeTableHead";
 import DataManager from "../../../../managers/DataManager/DataManager";
 import PokeDetails from "../../PokeDetails/PokeDetails";
+import {BeatLoader} from "react-spinners";
 
 class PokeTable extends Component {
     state = {
@@ -38,51 +39,60 @@ class PokeTable extends Component {
     };
 
     render() {
-        const {classes, pokeList} = this.props;
+        const {classes, pokeList, pokeRefine, pokeRefineList} = this.props;
         const {order, orderBy, rowsPerPage, page} = this.state;
+        const pokeListData = pokeRefine ? pokeRefineList : pokeList;
 
         return (
             <Paper className={classes.root}>
-                <div className={classes.tableWrapper}>
-                    <Table className={classes.table} aria-labelledby="pokemonsTable">
-                        <PokeTableHead
-                            order={order}
-                            orderBy={orderBy}
-                            onRequestSort={this.handleSort}
-                            rowCount={pokeList.length}
-                        />
-                        <TableBody>
-                            {DataManager.stableSort(pokeList, DataManager.getSorting(order, orderBy))
-                                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                                .map((pokemon, index) => {
-                                    const pokemonId = DataManager.getPokemonId(pokemon.url);
-                                    const pokemonImg = DataManager.getPokemonImg(pokemonId);
-                                    const pokemonName = DataManager.capitalize(pokemon.name);
+                {pokeListData
+                    ? <>
+                        <div className={classes.tableWrapper}>
+                            <Table className={classes.table} aria-labelledby="pokemonsTable">
+                                <PokeTableHead
+                                    order={order}
+                                    orderBy={orderBy}
+                                    onRequestSort={this.handleSort}
+                                    rowCount={pokeListData.length}
+                                />
+                                <TableBody>
+                                    {DataManager.stableSort(pokeListData, DataManager.getSorting(order, orderBy, pokeRefine))
+                                        .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                                        .map((pokemon, index) => {
+                                            const url = !pokeRefine ? pokemon.url : pokemon.pokemon.url;
+                                            const name = !pokeRefine ? pokemon.name : pokemon.pokemon.name;
+                                            const pokemonId = DataManager.getPokemonId(url);
+                                            const pokemonImg = DataManager.getPokemonImg(pokemonId);
+                                            const pokemonName = DataManager.capitalize(name);
 
-                                    return (
-                                        <PokeDetails key={index} pokemonId={pokemonId} pokemonImg={pokemonImg}
-                                                     pokemonName={pokemonName}/>
-                                    );
-                                })}
-                        </TableBody>
-                    </Table>
-                </div>
-                <TablePagination
-                    className={classes.pagination}
-                    rowsPerPageOptions={[10, 20, 50]}
-                    component="div"
-                    count={pokeList.length}
-                    rowsPerPage={rowsPerPage}
-                    page={page}
-                    backIconButtonProps={{
-                        'aria-label': 'Previous Page',
-                    }}
-                    nextIconButtonProps={{
-                        'aria-label': 'Next Page',
-                    }}
-                    onChangePage={this.handleChangePage}
-                    onChangeRowsPerPage={this.handleChangeRowsPerPage}
-                />
+                                            return (
+                                                <PokeDetails key={index} pokemonId={pokemonId} pokemonImg={pokemonImg}
+                                                             pokemonName={pokemonName}/>
+                                            );
+                                        })}
+                                </TableBody>
+                            </Table>
+                        </div>
+                        <TablePagination
+                            className={classes.pagination}
+                            rowsPerPageOptions={[10, 20, 50]}
+                            component="div"
+                            count={pokeListData.length}
+                            rowsPerPage={rowsPerPage}
+                            page={page}
+                            backIconButtonProps={{
+                                'aria-label': 'Previous Page',
+                            }}
+                            nextIconButtonProps={{
+                                'aria-label': 'Next Page',
+                            }}
+                            onChangePage={this.handleChangePage}
+                            onChangeRowsPerPage={this.handleChangeRowsPerPage}
+                        />
+                    </>
+                    : <div>
+                        <BeatLoader size={50} margin="16"/>
+                    </div>}
             </Paper>
         );
     }
@@ -128,6 +138,5 @@ const styles = theme => ({
 
     }
 });
-
 
 export default withStyles(styles)(PokeTable);

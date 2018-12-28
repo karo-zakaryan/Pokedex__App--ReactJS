@@ -18,9 +18,8 @@ class PokeDetails extends Component {
     };
 
     handleClose = () => {
-        const {pokemonId, removePokemonDetail} = this.props;
+        const {removePokemonDetail} = this.props;
         this.setState({show: false});
-        if (pokemonId > 950) return;
         removePokemonDetail();
     };
 
@@ -32,7 +31,6 @@ class PokeDetails extends Component {
         this.handleOpen();
 
         try {
-            if (pokeId > 950) return;
             this.props.fetchPokemonDetail(pokeId);
         } catch (err) {
             console.log("Failed to fetch pokemon", err);
@@ -121,7 +119,7 @@ const styles = theme => ({
             },
             "& .pie__chart": {
                 position: "absolute",
-                top: "45%",
+                top: "40%",
                 width: "100%",
                 height: "100%",
                 right: "-5%",

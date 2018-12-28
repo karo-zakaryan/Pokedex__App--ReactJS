@@ -2,7 +2,7 @@ import actionTypes from "../actions/actionTypes";
 
 export default function (state = {}, action) {
     switch (action.type) {
-        case actionTypes.APPEND_POKEMON:
+        case actionTypes.APPEND_POKE:
             return {
                 ...state,
                 ...action.pokemon,
