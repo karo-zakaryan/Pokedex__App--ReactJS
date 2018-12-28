@@ -2,14 +2,20 @@ export default class DataManager {
 
     static desc(a, b, orderBy) {
         let ordBy = orderBy.toLowerCase();
+        const ai = this.getPokemonId(a.url);
+        const bi = this.getPokemonId(b.url);
 
-        if (b[ordBy] < a[ordBy]) {
-            return -1;
+        if (ordBy === "id") {
+            return ai - bi;
+        } else {
+            if (b[ordBy] < a[ordBy]) {
+                return -1;
+            }
+            if (b[ordBy] > a[ordBy]) {
+                return 1;
+            }
+            return 0;
         }
-        if (b[ordBy] > a[ordBy]) {
-            return 1;
-        }
-        return 0;
     }
 
     static stableSort(array, cmp) {

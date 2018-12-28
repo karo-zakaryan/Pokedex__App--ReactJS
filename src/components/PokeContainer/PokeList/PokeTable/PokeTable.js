@@ -2,33 +2,20 @@ import React, {Component} from 'react';
 import {
     Table,
     TableBody,
-    TableCell,
     TablePagination,
-    TableRow,
     Paper,
-    Modal,
     withStyles,
-    Typography
 } from '@material-ui/core';
 import PokeTableHead from "./PokeTableHead/PokeTableHead";
 import DataManager from "../../../../managers/DataManager/DataManager";
-import noImage from "../../../../assets/no__img.png";
+import PokeDetails from "../../PokeDetails/PokeDetails";
 
 class PokeTable extends Component {
     state = {
-        order: 'asc',
-        orderBy: 'name',
+        order: 'desc',
+        orderBy: 'id',
         page: 0,
         rowsPerPage: 10,
-        isShow: false
-    };
-
-    handleOpen = () => {
-        this.setState({isShow: !this.state.isShow});
-    };
-
-    handleClose = () => {
-        this.setState({isShow: !this.state.isShow});
     };
 
     handleSort = (event, property) => {
@@ -48,15 +35,6 @@ class PokeTable extends Component {
 
     handleChangeRowsPerPage = e => {
         this.setState({rowsPerPage: e.target.value});
-    };
-
-    handleClick = pokemonId => {
-        this.handleOpen();
-        console.log(pokemonId);
-    };
-
-    addDefaultSrc = e => {
-        e.target.src = noImage;
     };
 
     render() {
@@ -82,24 +60,8 @@ class PokeTable extends Component {
                                     const pokemonName = DataManager.capitalize(pokemon.name);
 
                                     return (
-                                        <TableRow
-                                            hover
-                                            onClick={() => this.handleClick(pokemonId)}
-                                            tabIndex={-1}
-                                            key={index}
-                                        >
-                                            <TableCell>
-                                                {pokemonName}
-                                            </TableCell>
-
-                                            <TableCell align="left">
-                                                <img
-                                                    alt="sprite"
-                                                    src={pokemonImg}
-                                                    onError={this.addDefaultSrc}
-                                                />
-                                            </TableCell>
-                                        </TableRow>
+                                        <PokeDetails key={index} pokemonId={pokemonId} pokemonImg={pokemonImg}
+                                                     pokemonName={pokemonName}/>
                                     );
                                 })}
                         </TableBody>
@@ -121,18 +83,6 @@ class PokeTable extends Component {
                     onChangePage={this.handleChangePage}
                     onChangeRowsPerPage={this.handleChangeRowsPerPage}
                 />
-                <Modal
-                    aria-labelledby="simple-modal-title"
-                    aria-describedby="simple-modal-description"
-                    open={this.state.isShow}
-                    onClose={this.handleClose}
-                >
-                    <div className={classes.modal}>
-                        <Typography variant="h6" id="modal-title">
-                            Pokemon details
-                        </Typography>
-                    </div>
-                </Modal>
             </Paper>
         );
     }
@@ -147,12 +97,22 @@ const styles = theme => ({
             height: "auto"
         },
         "& img": {
-            width: 60,
-            height: 60
+            width: 50,
+            height: 40,
+            verticalAlign: "middle"
+        },
+        "& td": {
+            padding: "2%",
+            fontSize: "1rem",
+            fontWeight: "bold"
         }
     },
     table: {
         minWidth: 1020,
+        "& th": {
+            fontSize: 25,
+            fontStyle: "oblique"
+        }
     },
     tableWrapper: {
         overflowX: 'auto',
@@ -166,21 +126,8 @@ const styles = theme => ({
             left: "50%"
         }
 
-    },
-    modal: {
-        position: 'fixed',
-        backgroundColor: theme.palette.background.paper,
-        boxShadow: theme.shadows[5],
-        display: "flex",
-        width: "calc(100% - 700px)",
-        height: 270,
-        top: "50%",
-        left: "50%",
-        transform: "translate(-50%, -50%)",
-        padding: 50,
-        alignItems: "flex-end",
-        justifyContent: "space-between",
-    },
+    }
 });
+
 
 export default withStyles(styles)(PokeTable);

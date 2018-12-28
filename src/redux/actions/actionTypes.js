@@ -1,5 +1,7 @@
 const actionTypes = {
     APPEND_POKEMON: "APPEND_POKEMON",
+    APPEND_POKEMON_DETAIL: "APPEND_POKEMON_DETAIL",
+    REMOVE_POKEMON_DETAIL: "REMOVE_POKEMON_DETAIL"
 };
 
 export default actionTypes;
