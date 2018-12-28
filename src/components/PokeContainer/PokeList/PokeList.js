@@ -8,9 +8,16 @@ import PokeTable from "./PokeTable/PokeTable";
 class PokeList extends Component {
 
     state = {
-        pokemonListItems: [],
+        pokemonListItems: null,
+        pokemonRefineItems: null,
     };
 
+    handleSearch = (list, refine) => {
+        return list.filter(poke => {
+            const name = refine ? poke.pokemon.name : poke.name;
+            return name.toLowerCase().includes(this.props.searchQuery);
+        });
+    };
 
     componentDidMount() {
         try {
@@ -21,18 +28,34 @@ class PokeList extends Component {
     }
 
     componentDidUpdate(prevProps, prevState, snapshot) {
-        if (prevProps.pokemon !== this.props.pokemon) {
-            this.setState({pokemonListItems: [...this.props.pokemon.results]});
+        const {pokemon, searchQuery, pokeRefineList, pokeRefine} = this.props;
+        if (prevProps.pokeRefineList !== pokeRefineList
+            || prevProps.searchQuery !== searchQuery
+            || prevProps.pokemon !== pokemon
+            || prevProps.pokeRefine !== pokeRefine) {
+            const searchPokeList = (searchQuery !== "")
+                ? this.handleSearch(pokemon.results, false)
+                : pokemon.results;
+            const searchRefineList = (searchQuery !== "" && pokeRefine.isRefineByPokemonType)
+                ? this.handleSearch(pokeRefineList, true)
+                : pokeRefineList;
+            this.setState({
+                pokemonListItems: searchPokeList,
+                pokemonRefineItems: searchRefineList
+            });
         }
     }
 
     render() {
-        const {classes} = this.props;
-        const {pokemonListItems} = this.state;
+        const {classes, pokeRefine} = this.props;
+        const {pokemonListItems, pokemonRefineItems} = this.state;
 
         return (
             <div className={classes.root}>
-                <PokeTable pokeList={pokemonListItems}/>
+                <PokeTable
+                    pokeList={pokemonListItems}
+                    pokeRefineList={pokemonRefineItems}
+                    pokeRefine={pokeRefine.isRefineByPokemonType}/>
             </div>
         );
     }
@@ -61,6 +84,9 @@ const styles = () => ({
 const mapStateToProps = state => {
     return {
         pokemon: state.pkList,
+        pokeRefine: state.pkRefine,
+        pokeRefineList: state.pkListType.pokemon,
+        searchQuery: state.pkSearchQuery
     };
 };
 

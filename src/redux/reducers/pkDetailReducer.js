@@ -2,11 +2,13 @@ import actionTypes from "../actions/actionTypes";
 
 export default function (state = {}, action) {
     switch (action.type) {
-        case actionTypes.APPEND_POKE:
+        case actionTypes.APPEND_POKE_DETAIL:
             return {
                 ...state,
-                ...action.pokemon,
+                ...action.pokemonDetail,
             };
+        case actionTypes.REMOVE_POKE_DETAIL:
+            return action.pokemonDetail;
 
         default:
             return state;

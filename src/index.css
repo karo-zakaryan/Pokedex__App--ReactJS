@@ -38,12 +38,10 @@ body {
 }
 
 .MuiModal-root-153 {
-    width: 0;
-    height: 26%;
+    width: 1%;
+    height: 28%;
 }
 
 .MuiModal-root-153 .MuiPaper-root-13 {
-    min-width: 100px;
-    height: 150px;
-    overflow: hidden;
+    min-width: 53px;
 }

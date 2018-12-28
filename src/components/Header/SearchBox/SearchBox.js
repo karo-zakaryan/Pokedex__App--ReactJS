@@ -3,8 +3,23 @@ import InputBase from '@material-ui/core/InputBase';
 import {fade} from '@material-ui/core/styles/colorManipulator';
 import {withStyles} from '@material-ui/core/styles';
 import SearchIcon from '@material-ui/icons/Search';
+import {bindActionCreators} from "redux";
+import {sendSearchQuery} from "../../../redux/actions/pkSearchActions";
+import {connect} from "react-redux";
 
 class SearchBox extends Component {
+    state = {
+        query: ""
+    };
+
+    handleChange = name => event => {
+        this.setState({
+            [name]: event.target.value,
+        }, () => {
+            this.props.sendSearchQuery(this.state.query);
+        });
+    };
+    
     render() {
         const {classes} = this.props;
 
@@ -14,6 +29,7 @@ class SearchBox extends Component {
                     <SearchIcon/>
                 </div>
                 <InputBase
+                    onChange={this.handleChange("query")}
                     placeholder="Search…"
                     classes={{
                         root: classes.inputRoot,
@@ -70,4 +86,10 @@ const styles = theme => ({
     },
 });
 
-export default withStyles(styles)(SearchBox);
+const mapDispatchToProps = dispatch => {
+    return {
+        sendSearchQuery: bindActionCreators(sendSearchQuery, dispatch),
+    };
+};
+
+export default connect(null, mapDispatchToProps)(withStyles(styles)(SearchBox));

@@ -4,8 +4,8 @@ import {TableCell, TableHead, TableRow, TableSortLabel} from '@material-ui/core'
 import {lighten} from '@material-ui/core/styles/colorManipulator';
 
 const rows = [
-    {id: 'Name'},
-    {id: "Sprite"}
+    {id: 'id', numeric: true, label: 'Id'},
+    {id: 'name', numeric: true, label: 'Name'},
 ];
 
 class PokeTableHead extends Component {
@@ -23,14 +23,12 @@ class PokeTableHead extends Component {
                         return (
                             <TableCell
                                 key={row.id}
-                                sortDirection={orderBy === row.id ? order : false}
-                            >
+                                sortDirection={orderBy === row.id ? order : false}>
                                 <TableSortLabel
                                     active={orderBy === row.id}
                                     direction={order}
-                                    onClick={this.createSortHandler(row.id)}
-                                >
-                                    {row.id}
+                                    onClick={this.createSortHandler(row.id)}>
+                                    {row.label}
                                 </TableSortLabel>
                             </TableCell>
                         );

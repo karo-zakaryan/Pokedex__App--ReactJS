@@ -10,7 +10,6 @@ const Header = props => {
     const {classes} = props;
 
     return (
-        <header>
             <nav className={classes.root}>
                 <AppBar position="fixed">
                     <Toolbar>
@@ -24,7 +23,6 @@ const Header = props => {
                     </Toolbar>
                 </AppBar>
             </nav>
-        </header>
     );
 };
 
