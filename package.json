@@ -1,44 +1,34 @@
 {
-  "name": "pokedex__app",
-  "version": "0.1.0",
-  "private": true,
-  "dependencies": {
-    "@material-ui/core": "^3.7.1",
-    "@material-ui/icons": "^3.0.1",
-    "@material-ui/styles": "^3.0.0-alpha.4",
-    "axios": "^0.18.0",
-    "random-material-color": "^1.0.3",
-    "react": "^16.7.0",
-    "react-content-loader": "^3.4.1",
-    "react-dom": "^16.7.0",
-    "react-easy-chart": "^1.0.0",
-    "react-redux": "^6.0.0",
-    "react-scripts": "2.1.2",
-    "react-spinners": "^0.4.8",
-    "redux": "^4.0.1",
-    "redux-thunk": "^2.3.0"
-  },
+  "name": "pokedex__app--reactjs",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "dev": "nodemon server.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "eslintConfig": {
-    "extends": "react-app"
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/karo-zakaryan/Pokedex__App--ReactJS.git"
   },
-  "browserslist": [
-    ">0.2%",
-    "not dead",
-    "not ie <= 11",
-    "not op_mini all"
-  ],
-  "devDependencies": {
-    "eslint-config-standard": "^12.0.0",
-    "eslint-plugin-import": "^2.14.0",
-    "eslint-plugin-node": "^8.0.0",
-    "eslint-plugin-promise": "^4.0.1",
-    "eslint-plugin-react": "^7.11.1",
-    "eslint-plugin-standard": "^4.0.0"
-  }
+  "author": "Karo Zakaryan",
+  "license": "ISC",
+  "dependencies": {
+    "axios": "^0.18.0",
+    "bcrypt": "3.0.0",
+    "body-parser": "^1.17.2",
+    "cors": "^2.8.4",
+    "express": "^4.16.3",
+    "jsonwebtoken": "^8.4.0",
+    "jwt-decode": "^2.2.0",
+    "mysql": "^2.14.1",
+    "mysql2": "^1.6.1",
+    "nodemon": "^1.18.3",
+    "react-router-dom": "^4.3.1",
+    "sequelize": "^4.38.0"
+  },
+  "bugs": {
+    "url": "https://github.com/karo-zakaryan/Pokedex__App--ReactJS/issues"
+  },
+  "homepage": "https://github.com/karo-zakaryan/Pokedex__App--ReactJS#readme"
 }

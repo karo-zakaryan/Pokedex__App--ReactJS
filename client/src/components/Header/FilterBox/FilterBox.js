@@ -65,7 +65,7 @@ class FilterBox extends Component {
 
         return (
             <TextField
-                id="outlined-select-currency"
+                id="outlined-select-type"
                 select
                 label="Filter By"
                 className={classes.textField}

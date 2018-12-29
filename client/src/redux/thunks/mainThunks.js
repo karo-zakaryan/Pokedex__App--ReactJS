@@ -13,11 +13,11 @@ export const getPokemonDetail = pokemonId => dispatch => {
 
 export const getPokemonByType = type => dispatch => {
     return new Promise(
-         (resolve, reject) => {
+        (resolve, reject) => {
             API.get(`type/${type}/`).then(res => {
                 resolve(dispatch(appendPokemonByType(res.data)));
             }).catch(err => {
                 reject(err);
             })
-    });
+        });
 };
