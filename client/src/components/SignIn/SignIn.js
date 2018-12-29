@@ -2,36 +2,26 @@ import React, {Component} from "react";
 import {Link, withRouter} from "react-router-dom";
 import routePaths from "../../constKeys/routePaths";
 import isEmail from "validator/lib/isEmail";
-import Button from '@material-ui/core/Button';
-import CssBaseline from '@material-ui/core/CssBaseline';
-import FormControl from '@material-ui/core/FormControl';
-import Paper from '@material-ui/core/Paper';
-import Typography from '@material-ui/core/Typography';
-import TextField from '@material-ui/core/TextField';
-import withStyles from '@material-ui/core/styles/withStyles';
+import {Button, CssBaseline, FormControl, Paper, Typography, TextField, withStyles} from '@material-ui/core';
 import UserManager from "../../managers/UserManager/UserManager";
 
 class SignInForm extends Component {
-    constructor(props) {
-        super(props);
-
-        this.state = {
+    state = {
+        email: "",
+        password: "",
+        disabled: true,
+        formErrors: {
             email: "",
             password: "",
-            disabled: true,
-            formErrors: {
-                email: "",
-                password: "",
-                loginError: ""
-            }
-        };
-    }
+            loginError: ""
+        }
+    };
 
     handleChange = e => {
         e.preventDefault();
 
         const {name, value} = e.target;
-        let {formErrors} = this.state;
+        const {formErrors, email, password} = this.state;
 
         switch (name) {
             case "email":
@@ -50,10 +40,7 @@ class SignInForm extends Component {
         this.setState({
             formErrors,
             [name]: value,
-            disabled:
-                formErrors.email ||
-                !this.state.email ||
-                (formErrors.password || !this.state.password)
+            disabled: (formErrors.email || !email) || (formErrors.password || !password)
         });
     };
 
@@ -61,7 +48,7 @@ class SignInForm extends Component {
         e.preventDefault();
 
         const {history} = this.props;
-        const {email, password} = this.state;
+        const {email, password,formErrors} = this.state;
         const user = {
             email: email,
             password: password
@@ -78,7 +65,7 @@ class SignInForm extends Component {
                     loginError: error
                 }
             }));
-            console.error(this.state.formErrors.loginError);
+            console.error(formErrors.loginError);
         });
     };
 
@@ -139,7 +126,7 @@ class SignInForm extends Component {
                         >
                             Sign in
                         </Button>
-                        <Link to={routePaths.signUp}>
+                        <Link className={classes.aLink} to={routePaths.signUp}>
                             <Button
                                 type="submit"
                                 fullWidth
@@ -196,6 +183,9 @@ const styles = theme => ({
         fontSize: 12,
         color: "red",
         display: "block",
+    },
+    aLink: {
+        textDecoration: "none"
     }
 });
 

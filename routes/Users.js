@@ -30,10 +30,10 @@ users.post('/register', (req, res) => {
                     userData.password = hash;
                     User.create(userData)
                         .then(user => {
-                            res.json({ status: user.email + ' registered' })
+                            res.json({ status: user.email + ' registered' });
                         })
                         .catch(err => {
-                            res.send('errorA: ' + err)
+                            res.send('error: ' + err);
                         })
                 })
             } else {
@@ -58,13 +58,14 @@ users.post('/login', (req, res) => {
                         expiresIn: 1440
                     });
                     res.send(token)
+                } else {
+                    res.json({ error: 'User does not exist' });
+                    console.log("ELSE");
                 }
-            } else {
-                res.status(400).json({ error: 'User does not exist' })
             }
         })
         .catch(err => {
-            res.status(400).json({ error: err })
+            res.status(400).json({ error: err });
         })
 });
 

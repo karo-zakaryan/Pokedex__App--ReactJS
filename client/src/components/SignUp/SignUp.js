@@ -2,56 +2,47 @@ import React, {Component} from "react";
 import isEmail from 'validator/lib/isEmail';
 import {Link, withRouter} from "react-router-dom";
 import routePaths from "../../constKeys/routePaths";
-import Button from '@material-ui/core/Button';
-import CssBaseline from '@material-ui/core/CssBaseline';
-import FormControl from '@material-ui/core/FormControl';
-import Paper from '@material-ui/core/Paper';
-import Typography from '@material-ui/core/Typography';
-import withStyles from '@material-ui/core/styles/withStyles';
-import TextField from '@material-ui/core/TextField';
+import {Button, CssBaseline, FormControl, Paper, Typography, withStyles, TextField} from '@material-ui/core';
 import UserManager from "../../managers/UserManager/UserManager";
+import DataManager from "../../managers/DataManager/DataManager";
 
-let password;
-
-const usernameRegex = /^[a-zA-Z0-9]+$/;
+let pass;
 
 class SignUpForm extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
+    state = {
+        first_name: '',
+        last_name: '',
+        email: "",
+        password: "",
+        confPassword: "",
+        disabled: true,
+        formErrors: {
             first_name: '',
             last_name: '',
             email: "",
             password: "",
             confPassword: "",
-            disabled: true,
-            formErrors: {
-                first_name: '',
-                last_name: '',
-                email: "",
-                password: "",
-                confPassword: "",
-                loginError: ""
-            }
-        };
-    }
+            loginError: ""
+        }
+    };
+
 
     handleChange = e => {
         e.preventDefault();
 
-        let formErrors = this.state.formErrors;
+        const {formErrors, password, first_name, confPassword, last_name, email} = this.state;
         const {name, value} = e.target;
 
         switch (name) {
             case "first_name":
                 formErrors.first_name =
-                    usernameRegex.test(value) && value.length >= 3
+                    DataManager.testName(value) && value.length >= 3
                         ? ""
                         : "Minimum 3 characters required. Allowed only letters and numbers";
                 break;
             case "last_name":
                 formErrors.last_name =
-                    usernameRegex.test(value) && value.length >= 3
+                    DataManager.testName(value) && value.length >= 3
                         ? ""
                         : "Minimum 3 characters required. Allowed only letters and numbers";
                 break;
@@ -63,12 +54,12 @@ class SignUpForm extends Component {
             case "password":
                 formErrors.password =
                     value.length < 6 ? "Minimum 6 characters required" : "";
-                password = value;
+                pass = value;
 
                 break;
             case "confPassword":
                 formErrors.confPassword =
-                    password !== value
+                    pass !== value
                         ? "Your password and confirmation password do not match"
                         : "";
                 break;
@@ -80,17 +71,17 @@ class SignUpForm extends Component {
             formErrors,
             [name]: value,
             disabled:
-                formErrors.email ||
-                !this.state.email ||
-                (formErrors.password || !this.state.password) ||
-                (formErrors.first_name || !this.state.first_name) ||
-                (formErrors.confPassword || !this.state.confPassword)
+                (formErrors.email || !email) ||
+                (formErrors.password || !password) ||
+                (formErrors.first_name || !first_name) ||
+                (formErrors.last_name || !last_name) ||
+                (formErrors.confPassword || !confPassword)
         });
     };
 
     signUp = e => {
         e.preventDefault();
-        const {email, password, last_name, first_name} = this.state;
+        const {email, password, last_name, first_name, formErrors} = this.state;
 
         const user = {
             first_name: first_name,
@@ -100,9 +91,7 @@ class SignUpForm extends Component {
         };
 
         UserManager.register(user).then(res => {
-            console.log(res);
-            localStorage.setItem('usertoken', res.data);
-            this.props.history.push(routePaths.pokemonPage);
+            this.props.history.push(routePaths.signIn);
         }).catch(error => {
             this.setState(prevState => ({
                 formErrors: {
@@ -110,7 +99,7 @@ class SignUpForm extends Component {
                     loginError: error
                 }
             }));
-            console.error(this.state.formErrors.loginError);
+            console.error(formErrors.loginError);
         });
     };
 
@@ -225,7 +214,7 @@ class SignUpForm extends Component {
                         >
                             Sign up
                         </Button>
-                        <Link to={routePaths.signIn}>
+                        <Link className={classes.aLink} to={routePaths.signIn}>
                             <Button
                                 type="submit"
                                 fullWidth
@@ -282,6 +271,9 @@ const styles = theme => ({
         fontSize: 12,
         color: "red",
         display: "block",
+    },
+    aLink: {
+        textDecoration: "none"
     }
 });
 

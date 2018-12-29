@@ -37,11 +37,12 @@ body {
     background: #555;
 }
 
-.MuiPopover-paper-153 {
+div#menu- div {
     width: auto;
     height: auto;
 }
-
-.MuiModal-root-153 .MuiPaper-root-13 {
-    min-width: 53px;
+div#profile-popper div {
+    width: auto;
+    height: auto;
+    padding: 20px;
 }

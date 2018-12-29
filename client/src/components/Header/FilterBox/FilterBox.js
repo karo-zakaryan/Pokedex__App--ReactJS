@@ -65,7 +65,7 @@ class FilterBox extends Component {
 
         return (
             <TextField
-                id="outlined-select-type"
+                id="filter-box"
                 select
                 label="Filter By"
                 className={classes.textField}

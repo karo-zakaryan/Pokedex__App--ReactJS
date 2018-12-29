@@ -1,20 +1,40 @@
 import React, {Component} from 'react';
-import AppBar from '@material-ui/core/AppBar';
-import Toolbar from '@material-ui/core/Toolbar';
-import Typography from '@material-ui/core/Typography';
+import {
+    AppBar,
+    Toolbar,
+    Typography,
+    FormGroup,
+    FormControlLabel,
+    Switch,
+    withStyles,
+    Button,
+    Popover
+} from '@material-ui/core';
 import SearchBox from "./SearchBox/SearchBox";
-import {withStyles} from '@material-ui/core/styles';
 import FilterBox from "./FilterBox/FilterBox";
-import FormGroup from "@material-ui/core/es/FormGroup";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
-import Switch from "@material-ui/core/Switch";
 import {withRouter} from "react-router-dom";
-
+import jwt_decode from "jwt-decode";
 
 class Header extends Component {
     state = {
-        auth: true
+        auth: true,
+        anchorEl: null,
+        firstName: "",
+        lastName: "",
+        date: "",
+        email: ""
     };
+
+    componentDidMount() {
+        const token = localStorage.usertoken;
+        const decoded = jwt_decode(token);
+        this.setState({
+            firstName: decoded.first_name,
+            lastName: decoded.last_name,
+            email: decoded.email,
+            date: decoded.created
+        });
+    }
 
     handleChange = e => {
         e.preventDefault();
@@ -25,17 +45,59 @@ class Header extends Component {
         });
     };
 
+    openProfileOver = e => {
+        this.setState({
+            anchorEl: e.currentTarget,
+        });
+    };
+
+    handleClose = () => {
+        this.setState({
+            anchorEl: null,
+        });
+    };
+
     render() {
         const {classes} = this.props;
-        const {auth} = this.state;
+        const {auth, anchorEl, firstName, lastName, email, date} = this.state;
+        const open = Boolean(anchorEl);
 
         return (
             <nav className={classes.root}>
                 <AppBar position="fixed">
                     <Toolbar>
-                        <Typography className={classes.title} variant="h6" color="inherit" noWrap>
-                            PokeDex
-                        </Typography>
+                        <Button className={classes.button} variant="text" onClick={this.openProfileOver}>
+                            <Typography className={classes.title} variant="h6" color="inherit" noWrap>
+                                Profile
+                            </Typography>
+                        </Button>
+                        <Popover
+                            id="profile-popper"
+                            open={open}
+                            anchorEl={anchorEl}
+                            onClose={this.handleClose}
+                            anchorOrigin={{
+                                vertical: 'bottom',
+                                horizontal: 'center',
+                            }}
+                            transformOrigin={{
+                                vertical: 'top',
+                                horizontal: 'center',
+                            }}
+                        >
+                            <Typography>
+                                First Name: <b>{firstName}</b>
+                            </Typography>
+                            <Typography>
+                                Last Name: <b>{lastName}</b>
+                            </Typography>
+                            <Typography>
+                                Email: <b>{email}</b>
+                            </Typography>
+                            <Typography>
+                                Account Create Date: <b>{date}</b>
+                            </Typography>
+                        </Popover>
                         <FilterBox/>
                         <SearchBox/>
                         <div className={classes.logout}>
@@ -67,17 +129,20 @@ const styles = theme => ({
         flexGrow: 1,
     },
     title: {
-        fontSize: 25,
+        fontSize: 18,
+        textOverflow: "initial",
+        textTransform: "initial",
         marginLeft: "2%",
-        display: 'none',
-        [theme.breakpoints.up('sm')]: {
-            display: 'block',
-        },
     },
     logout: {
         width: "fit-content",
         "& div": {
             width: "fit-content",
+        }
+    },
+    button: {
+        "&:hover": {
+            backgroundColor: "#2196f3"
         }
     }
 });

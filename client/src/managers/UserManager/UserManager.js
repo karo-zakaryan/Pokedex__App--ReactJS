@@ -17,24 +17,29 @@ export default class UserManager {
                         }
                         resolve(res);
                     }).catch(err => {
-                    reject(err)
+                    reject(err);
                 })
             });
     };
 
     static login = user => {
-        return axios
-            .post('users/login', {
-                email: user.email,
-                password: user.password
-            })
-            .then(res => {
-                console.log(res);
-                localStorage.setItem('usertoken', res.data);
-                return res.data;
-            })
-            .catch(err => {
-                console.log(err);
-            })
+        return new Promise(
+            (resolve, reject) => {
+                axios
+                    .post('users/login', {
+                        email: user.email,
+                        password: user.password
+                    })
+                    .then(res => {
+                        if (res.data.error) {
+                            reject(res.data.error);
+                        }
+                        localStorage.setItem('usertoken', res.data);
+                        resolve(res.data);
+                    })
+                    .catch(err => {
+                        reject(err);
+                    })
+            });
     };
 }

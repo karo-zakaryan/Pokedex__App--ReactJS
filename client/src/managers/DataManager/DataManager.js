@@ -49,4 +49,9 @@ export default class DataManager {
         if (typeof s !== 'string') return '';
         return s.charAt(0).toUpperCase() + s.slice(1);
     }
+
+    static testName(value) {
+        const usernameRegex = /^[a-zA-Z0-9]+$/;
+        return usernameRegex.test(value);
+    }
 }
