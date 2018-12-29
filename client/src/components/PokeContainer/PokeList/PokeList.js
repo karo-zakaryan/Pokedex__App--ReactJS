@@ -4,6 +4,7 @@ import {bindActionCreators} from "redux";
 import {getPokemon} from "../../../redux/thunks/mainThunks";
 import {withStyles} from '@material-ui/core/styles';
 import PokeTable from "./PokeTable/PokeTable";
+import {RiseLoader} from "react-spinners";
 
 class PokeList extends Component {
 
@@ -52,10 +53,13 @@ class PokeList extends Component {
 
         return (
             <div className={classes.root}>
-                <PokeTable
-                    pokeList={pokemonListItems}
-                    pokeRefineList={pokemonRefineItems}
-                    pokeRefine={pokeRefine.isRefineByPokemonType}/>
+                {pokemonListItems
+                    ? <PokeTable
+                        pokeList={pokemonListItems}
+                        pokeRefineList={pokemonRefineItems}
+                        pokeRefine={pokeRefine.isRefineByPokemonType}/>
+                    : <RiseLoader className="loader" size={90} margin="30"/>
+                }
             </div>
         );
     }
@@ -64,10 +68,20 @@ class PokeList extends Component {
 const styles = () => ({
     root: {
         padding: "3%",
-        "& div": {
+        "& .table": {
             width: "auto",
             height: "auto"
-        }
+        },
+        "& .loader": {
+            width: "100%",
+            height: "100%",
+            display: "flex",
+            justifyContent: "center",
+            marginTop: "10%",
+            "& div": {
+                backgroundColor: "#e91e63"
+            }
+        },
     },
     list: {
         flexGrow: 1,
