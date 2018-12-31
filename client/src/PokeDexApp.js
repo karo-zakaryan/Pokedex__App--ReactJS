@@ -10,6 +10,7 @@ import Page404 from "./components/Page404/Page404";
 
 const PokeDexApp = () => {
     const isUserLoggedIn = localStorage.usertoken;
+    const space = /\s/.test(isUserLoggedIn);
     const signIn = <Redirect to={routePaths.signIn}/>;
     const pokemonPage = <Redirect to={routePaths.pokemonPage}/>;
 
@@ -17,16 +18,16 @@ const PokeDexApp = () => {
         <div>
             <Switch>
                 <Route exact path="/" render={() => (
-                    isUserLoggedIn ? (pokemonPage) : (<SignIn/>))}/>
+                    isUserLoggedIn && !space ? (pokemonPage) : (<SignIn/>))}/>
 
                 <Route exact path={routePaths.signIn} render={() => (
-                    isUserLoggedIn ? (pokemonPage) : (<SignIn/>))}/>
+                    isUserLoggedIn && !space ? (pokemonPage) : (<SignIn/>))}/>
 
                 <Route exact path={routePaths.signUp} render={() => (
-                    isUserLoggedIn ? (pokemonPage) : (<SignUp/>))}/>
+                    isUserLoggedIn && !space ? (pokemonPage) : (<SignUp/>))}/>
 
                 <Route exact path={routePaths.pokemonPage} render={() => (
-                    isUserLoggedIn ? (
+                    isUserLoggedIn && !space ? (
                         <>
                             <Header/>
                             <PokeContainer/>

@@ -4,7 +4,7 @@
   "description": "",
   "main": "server.js",
   "scripts": {
-    "dev": "nodemon server.js",
+    "dev": "nodemon ./bin/www.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -17,15 +17,26 @@
     "axios": "^0.18.0",
     "bcrypt": "3.0.0",
     "body-parser": "^1.17.2",
+    "cookie-parser": "^1.4.3",
     "cors": "^2.8.4",
+    "debug": "^4.1.1",
     "express": "^4.16.3",
+    "express-jwt": "^5.3.1",
+    "express-server-utils": "^1.1.0",
+    "jade": "^1.11.0",
     "jsonwebtoken": "^8.4.0",
     "jwt-decode": "^2.2.0",
+    "morgan": "^1.9.1",
     "mysql": "^2.14.1",
     "mysql2": "^1.6.1",
     "nodemon": "^1.18.3",
+    "passport": "^0.4.0",
+    "passport-facebook-token": "^3.3.0",
+    "passport-google-token": "^0.1.2",
     "react-router-dom": "^4.3.1",
-    "sequelize": "^4.38.0"
+    "request": "^2.88.0",
+    "sequelize": "^4.38.0",
+    "serve-favicon": "^2.5.0"
   },
   "bugs": {
     "url": "https://github.com/karo-zakaryan/Pokedex__App--ReactJS/issues"
