@@ -5,6 +5,8 @@ import routePaths from "../../constKeys/routePaths";
 import {Button, CssBaseline, FormControl, Paper, Typography, withStyles, TextField} from '@material-ui/core';
 import UserManager from "../../managers/UserManager/UserManager";
 import DataManager from "../../managers/DataManager/DataManager";
+import {GoogleLogin} from "react-google-login";
+import FontAwesome from "react-fontawesome";
 
 let pass;
 
@@ -24,6 +26,36 @@ class SignUpForm extends Component {
             confPassword: "",
             loginError: ""
         }
+    };
+
+    googleResponse = (response) => {
+        const tokenBlob = new Blob([JSON.stringify({access_token: response.accessToken}, null, 2)], {type: 'application/json'});
+        const options = {
+            method: 'POST',
+            body: tokenBlob,
+            mode: 'cors',
+            cache: 'default',
+            proxy: {
+                host: "localhost",
+                port: 5000
+            }
+        };
+        fetch('http://localhost:5000/auth/google', options).then(r => {
+            if (r.ok) {
+                const token = r.headers.get('x-auth-token');
+                const res = r.json();
+                res.then(user => {
+                    if (token) {
+                        localStorage.setItem('usertoken', token);
+                        this.props.history.push(routePaths.pokemonPage);
+                    }
+                });
+            }
+        })
+    };
+
+    onFailure = (error) => {
+        console.error(error);
     };
 
 
@@ -214,6 +246,16 @@ class SignUpForm extends Component {
                         >
                             Sign up
                         </Button>
+                        <GoogleLogin
+                            clientId="1061445041073-c4r5u0bgudae2noedn2knqjrcr99im21.apps.googleusercontent.com"
+                            onSuccess={this.googleResponse}
+                            onFailure={this.onFailure}
+                            prompt="select_account"
+                            className={classes.submit}
+                        >
+                            <FontAwesome name="google"/>
+                            <span>Sign up with Google</span>
+                        </GoogleLogin>
                         <Link className={classes.aLink} to={routePaths.signIn}>
                             <Button
                                 type="submit"
@@ -261,7 +303,18 @@ const styles = theme => ({
     },
     submit: {
         height: '40px',
+        display: "flex",
+        width: "-webkit-fill-available",
+        justifyContent: "center",
         marginTop: theme.spacing.unit * 3,
+        outline: 0,
+        "& div": {
+            width: "auto",
+            height: 37
+        },
+        "& span": {
+            fontSize: "0.875rem"
+        }
     },
     blue: {
         backgroundColor: '#04a9f5',

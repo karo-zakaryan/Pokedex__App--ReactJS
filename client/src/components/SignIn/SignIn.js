@@ -4,6 +4,7 @@ import routePaths from "../../constKeys/routePaths";
 import isEmail from "validator/lib/isEmail";
 import {Button, CssBaseline, FormControl, Paper, Typography, TextField, withStyles} from '@material-ui/core';
 import UserManager from "../../managers/UserManager/UserManager";
+import {GoogleLogin} from 'react-google-login';
 
 class SignInForm extends Component {
     state = {
@@ -16,6 +17,37 @@ class SignInForm extends Component {
             loginError: ""
         }
     };
+
+    googleResponse = (response) => {
+        const tokenBlob = new Blob([JSON.stringify({access_token: response.accessToken}, null, 2)], {type: 'application/json'});
+        const options = {
+            method: 'POST',
+            body: tokenBlob,
+            mode: 'cors',
+            cache: 'default',
+            proxy: {
+                host: "localhost",
+                port: 5000
+            }
+        };
+        fetch('http://localhost:5000/auth/google', options).then(r => {
+            if (r.ok) {
+                const token = r.headers.get('x-auth-token');
+                const res = r.json();
+                res.then(user => {
+                    if (token) {
+                        localStorage.setItem('usertoken', token);
+                        this.props.history.push(routePaths.pokemonPage);
+                    }
+                });
+            }
+        })
+    };
+
+    onFailure = (error) => {
+        console.error(error);
+    };
+
 
     handleChange = e => {
         e.preventDefault();
@@ -48,7 +80,7 @@ class SignInForm extends Component {
         e.preventDefault();
 
         const {history} = this.props;
-        const {email, password,formErrors} = this.state;
+        const {email, password, formErrors} = this.state;
         const user = {
             email: email,
             password: password
@@ -137,6 +169,14 @@ class SignInForm extends Component {
                                 Sign up
                             </Button>
                         </Link>
+                        <GoogleLogin
+                            clientId="1061445041073-c4r5u0bgudae2noedn2knqjrcr99im21.apps.googleusercontent.com"
+                            onSuccess={this.googleResponse}
+                            onFailure={this.onFailure}
+                            prompt="select_account"
+                            buttonText="Sign in with Google"
+                            className={classes.submit}
+                        />
                     </form>
                 </Paper>
             </main>
@@ -173,7 +213,18 @@ const styles = theme => ({
     },
     submit: {
         height: '40px',
+        display: "flex",
+        width: "-webkit-fill-available",
+        justifyContent: "center",
         marginTop: theme.spacing.unit * 3,
+        outline: 0,
+        "& div": {
+            width: "auto",
+            height: 37
+        },
+        "& span": {
+            fontSize: "0.875rem"
+        }
     },
     blue: {
         backgroundColor: '#04a9f5',

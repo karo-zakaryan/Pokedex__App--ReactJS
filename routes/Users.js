@@ -37,11 +37,11 @@ users.post('/register', (req, res) => {
                         })
                 })
             } else {
-                res.json({ error: "User already exists" })
+                res.json({ error: "User already exists" });
             }
         })
         .catch(err => {
-            res.send('error: ' + err)
+            res.send('error: ' + err);
         })
 });
 
@@ -57,7 +57,7 @@ users.post('/login', (req, res) => {
                     let token = jwt.sign(user.dataValues, process.env.SECRET_KEY, {
                         expiresIn: 1440
                     });
-                    res.send(token)
+                    res.send(token);
                 } else {
                     res.json({ error: 'User does not exist' });
                     console.log("ELSE");
@@ -65,6 +65,7 @@ users.post('/login', (req, res) => {
             }
         })
         .catch(err => {
+            res.send(err);
             res.status(400).json({ error: err });
         })
 });
