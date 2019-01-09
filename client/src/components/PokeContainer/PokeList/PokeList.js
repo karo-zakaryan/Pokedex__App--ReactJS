@@ -14,7 +14,7 @@ class PokeList extends Component {
     };
 
     handleSearch = (list, refine) => {
-        return list.filter(poke => {
+        return  list && list.filter(poke => {
             const name = refine ? poke.pokemon.name : poke.name;
             return name.toLowerCase().includes(this.props.searchQuery);
         });
