@@ -13,7 +13,8 @@ import {
 import SearchBox from "./SearchBox/SearchBox";
 import FilterBox from "./FilterBox/FilterBox";
 import {withRouter} from "react-router-dom";
-import jwt_decode from "jwt-decode";
+
+// import jwt_decode from "jwt-decode";
 
 class Header extends Component {
     state = {
@@ -25,16 +26,16 @@ class Header extends Component {
         email: ""
     };
 
-    componentDidMount() {
-        const token = localStorage.usertoken;
-        const decoded = jwt_decode(token);
-        this.setState({
-            firstName: decoded.first_name,
-            lastName: decoded.last_name,
-            email: decoded.email,
-            date: decoded.created
-        });
-    }
+    // componentDidMount() {
+    //     const token = localStorage.usertoken;
+    //     const decoded = jwt_decode(token);
+    //     this.setState({
+    //         firstName: decoded.first_name,
+    //         lastName: decoded.last_name,
+    //         email: decoded.email,
+    //         date: decoded.created
+    //     });
+    // }
 
     handleChange = e => {
         e.preventDefault();
@@ -66,6 +67,7 @@ class Header extends Component {
             <nav className={classes.root}>
                 <AppBar position="fixed">
                     <Toolbar>
+                        {/*
                         <Button className={classes.button} variant="text" onClick={this.openProfileOver}>
                             <Typography className={classes.title} variant="h6" color="inherit" noWrap>
                                 Profile
@@ -98,9 +100,10 @@ class Header extends Component {
                                 Account Create Date: <b>{date}</b>
                             </Typography>
                         </Popover>
+                        */}
                         <FilterBox/>
                         <SearchBox/>
-                        <div className={classes.logout}>
+                        { /*<div className={classes.logout}>
                             <FormGroup>
                                 <FormControlLabel
                                     control={
@@ -111,6 +114,7 @@ class Header extends Component {
                                 />
                             </FormGroup>
                         </div>
+                        */}
                     </Toolbar>
                 </AppBar>
             </nav>
@@ -122,7 +126,7 @@ const styles = theme => ({
     root: {
         width: '100%',
         "&>header>div": {
-            justifyContent: "space-between",
+            justifyContent: "space-evenly",
         }
     },
     grow: {
